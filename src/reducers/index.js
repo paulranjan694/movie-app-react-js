@@ -5,6 +5,8 @@ import {
   ADD_FAVOURITES,
   REMOVE_FROM_FAVOURITES,
   SET_SHOW_FAVOURITES,
+  ADD_MOVIE_TO_LIST,
+  ADD_SEARCH_RESULT
 } from '../actions';
 
 // initial state
@@ -15,7 +17,6 @@ const initailMovieState = {
 };
 
 export function movies (state = initailMovieState, action) {
-  console.log ('MOVIES REDUCER');
   switch (action.type) {
     case ADD_MOVIES:
       return {
@@ -40,6 +41,11 @@ export function movies (state = initailMovieState, action) {
         ...state,
         showFavourites: action.val,
       };
+    case ADD_MOVIE_TO_LIST:
+      return{
+        ...state,
+        lists:[action.movie,...state.lists]
+      };
     default:
       return state;
   }
@@ -47,14 +53,26 @@ export function movies (state = initailMovieState, action) {
 
 const initialSearchState = {
   result: {},
+  showSearchResult : false
 };
 
 export function search (state = initialSearchState, action) {
-  console.log ('SEARCH REDUCER');
-
-  return {
-    state,
-  };
+  
+  switch (action.type) {
+    case ADD_SEARCH_RESULT:
+      return {
+        ...state,
+        result: action.movie,
+        showSearchResult: true,
+      };
+      case ADD_MOVIE_TO_LIST:
+        return{
+          ...state,
+          showSearchResult:false
+        };
+    default:
+      return state;
+  }
 }
 
 // *****Internally combineReducers works like this only****
